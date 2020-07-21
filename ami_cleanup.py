@@ -1,6 +1,7 @@
 import boto3
 import string
 from datetime import datetime, timedelta 
+import re
 
 '''
 variables
@@ -60,14 +61,39 @@ for image in filtered_images:
 print()
 
 '''
-Purge AMIs
+Purge AMIs and snapshots
 '''
 print(f"Count of AMIs to purge: {len(purge_images)}")
 if len(purge_images) > 0:
     for image in (image for image in filtered_images if image.id in purge_images):
-        print(f"Purging: {image.name}[{image.id}]")
+        print(f"Purging ==> {image.name}[{image.id}]")
         #image.deregister()  # uncomment this for actual deregistering
-        print("Purge complete!")
+    print()
+    '''
+    Find matching associated snapshots
+    '''
+    myAccount = boto3.client('sts').get_caller_identity()['Account']
+    client = boto3.client("ec2",var_region_name)
+    snapshots= client.describe_snapshots(OwnerIds=[myAccount])['Snapshots']
+
+    purge_snapshots = set()
+    for snapshot in snapshots:
+        snapshot_id = snapshot["SnapshotId"]
+        snapshot_vol_size = snapshot["VolumeSize"]
+        snapshot_description = snapshot["Description"]
+        
+        for image in purge_images:
+            if re.search(image,snapshot_description):
+                print(f"Appending to purge_snapshots set: {snapshot_id}")
+                purge_snapshots.add(snapshot_id)
+    print()
+
+    print(f"Count of snapshots to purge: {len(purge_snapshots)}")
+    for snapshot in purge_snapshots:
+        print(f"Purging ==> {snapshot}")
+        #client.delete_snapshot(SnapshotId=snapshot) # uncomment this for actual deletion
+    print()
+    print("Purge complete!")
 else:
     print(f"No purging required !")
 print()
