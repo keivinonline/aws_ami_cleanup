@@ -20,6 +20,7 @@ key|value|Description
 TAG_KEY|name|Name of the tag key
 TAG_VALUE|windows2016-base-|Name of the tag value. Script checks the value that begins with this string 
 DAYS_OLD|14|Number of days since the creation of the AMI 
+LAUNCH_CONFIG_CHECK|`true` / `false`| Whether to check the AMIs associated with Launch Configurations
 
 ### Lambda IAM Role Policies Required
 - `AWSLambdaBasicExecutionRole`
@@ -52,3 +53,5 @@ DAYS_OLD|14|Number of days since the creation of the AMI
     ]
 }
 ```
+## To-dos
+[ ] - prevent deletion of snapshots used by LaunchConfig AMIs
