@@ -41,7 +41,11 @@ DAYS_OLD|14|Number of days since the creation of the AMI
             "Action": [
                 "ec2:DescribeImages",
                 "ec2:DeregisterImage",
-                "ec2:DescribeImageAttribute"
+                "ec2:DeleteSnapshot",
+                "ec2:DescribeSnapshotAttribute",
+                "autoscaling:DescribeLaunchConfigurations",
+                "ec2:DescribeImageAttribute",
+                "ec2:DescribeSnapshots"
             ],
             "Resource": "*"
         }
