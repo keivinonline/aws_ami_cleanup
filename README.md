@@ -21,6 +21,7 @@ TAG_KEY|name|Name of the tag key
 TAG_VALUE|windows2016-base-|Name of the tag value. Script checks the value that begins with this string 
 DAYS_OLD|14|Number of days since the creation of the AMI 
 LAUNCH_CONFIG_CHECK|`true` / `false`| Whether to check the AMIs associated with Launch Configurations
+DRY_RUN|`true` / `false`| Whether to run the script in test mode.<br> `True` - will procceed with test mode <br> `False` - **will DELETE AMIs and Snapshots !**
 
 ### Lambda IAM Role Policies Required
 - `AWSLambdaBasicExecutionRole`
@@ -53,5 +54,8 @@ LAUNCH_CONFIG_CHECK|`true` / `false`| Whether to check the AMIs associated with 
     ]
 }
 ```
-## To-dos
-[ ] - prevent deletion of snapshots used by LaunchConfig AMIs
+## updates
+1) 20200723 - 
+- added `dry-run`
+- added `failed_images` ,`failed_snapshots`, `failed_images_snapshot_access`
+- replaced "description AMI" matching with "direct snapshot_id" reference via AMIs block device snapshotId reference
