@@ -6,6 +6,9 @@ This script cleans up AMI images based on
 - tag key/value pair 
 - age of AMI created
 
+It will
+- skip AMIs that are associated to Auto-scaling Launch Configuration groups
+- skip AMIs with inaccessible snapshots (e.g. AMI still in creation/pending state)
 
 ## Scripts
 
